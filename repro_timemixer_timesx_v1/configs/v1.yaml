@@ -1,0 +1,195 @@
+{
+  "protocol_version": "timesx_timemixer_v1",
+  "spec_doc": "TimeMixer_TimesX_Experiment_Plan_v1_20260929.md",
+
+  "source_snapshot": {
+    "ln_dir_default": "/dev_data/wlt/VisionTS_Experiments/repro_ln_timesx_v1",
+    "ln_dir_local_fallback": "/home/wlt/MMTS/VisionTS_Experiments/repro_ln_timesx_v1",
+    "ln_split_manifest_sha256": "b47feebfe5e7fbf6c650ce2d23735794d853b515774c43c658724cf8328363a9",
+    "ln_data_cache_sha256": "f83924d9f459da096c45ccd880f204efc095fbed5513794a5d706d71371881aa",
+    "ln_protocol_sha256": "51526cdd4dbd808572ba3a43e26fd524d32b6a6cb021ba0e1c4e7999ecd208a4",
+    "ln_split_counts_sha256": "a24b8757d70217864806deb79e386ea5bb41d6a7830e3a8d7190ccd0a0076f11",
+    "ln_split_manifest_content_sha256_excl_zip_path": "1b0c2db9ceba21ec3c52f3586ba3a60cd95e7fd9f037ae431ed6bfdf6f9b9cd9",
+    "ln_data_cache_array_sha256": {
+      "series": "948d78a48b0cbb03b5cd24b004259291ccb6ffe3cba2f2597ea71cfa9177b155",
+      "series_off": "9aff39665e203657459da3c248046698fd7ccf86b2c23f47b2322f2b253c254c",
+      "series_len": "0f0d9cc49f4b9c3c0f30ff65e402133b9545bb4cee959c2311955c44108262cb",
+      "var_keys": "c20d71401295a40c23316d40859115edfec608d3d8d4e4a51baf7292765d36e0"
+    },
+    "ln_static_code_note": "LN code-fingerprint recheck covers ONLY the static .py/.sh/.yaml files listed in the LN protocol; running LN logs/checkpoints/results are explicitly excluded.",
+    "note": "local LN manifests/protocol.json is stale by design; pins come from the eta launch_audit_v2 evidence package"
+  },
+
+  "data": {
+    "ctx": 96, "pred": 12,
+    "std_ddof": 0, "std_eps": 1e-8,
+    "dense_rule": "dense_count = max(0, n_train_obs - 107); dense window start s in [0, dense_count); the full 108 steps (96 input + 12 target) lie inside the training observations",
+    "fallback_std_rule": "per-window d_i = pstdev(raw 96-step input, ddof=0); if < std_eps use the frozen manifest fallback_std (pstdev of the variable's first 96 training observations); invalid fallback aborts; no future targets are used; never replaced by the model's internal eps-std",
+    "no_external_scaler": true,
+    "window_arrays": "x = series[off+s : off+s+96], y = series[off+s+96 : off+s+108] from data_cache.npz"
+  },
+
+  "model": {
+    "task_name": "long_term_forecast",
+    "seq_len": 96, "label_len": 0, "pred_len": 12,
+    "down_sampling_window": 2, "down_sampling_layers": 2,
+    "down_sampling_method": "avg",
+    "channel_independence": 1,
+    "e_layers": 2, "d_model": 32, "d_ff": 64,
+    "decomp_method": "moving_avg", "moving_avg": 25,
+    "enc_in": 1, "dec_in": 1, "c_out": 1,
+    "embed": "timeF", "freq": "h",
+    "dropout": 0.1, "use_norm": 1, "top_k": 5,
+    "time_features": "x_mark_enc=None, x_mark_dec=None, x_dec=None (no temporal branch)",
+    "fp32": true, "tf32_matmul": false, "tf32_cudnn": false,
+    "deterministic_algorithms": true,
+    "amp": false,
+    "params_expected": 63531,
+    "tensors_expected": 60,
+    "grad_bearing_expected": 55,
+    "grad_none_expected": [
+      "pdm_blocks.0.layer_norm.weight",
+      "pdm_blocks.0.layer_norm.bias",
+      "pdm_blocks.1.layer_norm.weight",
+      "pdm_blocks.1.layer_norm.bias",
+      "enc_embedding.temporal_embedding.embed.weight"
+    ],
+    "core_md5": {
+      "models/TimeMixer.py": "81928e546d7be98ca310fbf8f6dabcab",
+      "layers/Autoformer_EncDec.py": "9e60a6b27b8a1419b5cfe2c4873a2183",
+      "layers/Embed.py": "81485d05598d7b677b01f5154bf2595c",
+      "layers/StandardNorm.py": "c5a30664cde3b211b41c0ace4e30c786"
+    },
+    "core_note": "models/TimeMixer.py and its layer dependencies are reused READ-ONLY; any md5 drift aborts"
+  },
+
+  "tslib": {
+    "commit": "4e938a1767106324dd753b2a44832bf870a0252e",
+    "isolation_rule": "tracked files must be unchanged; untracked content allowed only under repro_timemixer_timesx_v1/; enforced by prepare/preflight/audit"
+  },
+
+  "optim": {
+    "lrs": [0.0001, 0.001, 0.01],
+    "weight_decay": 0.0, "betas": [0.9, 0.999], "eps": 1e-8,
+    "clip_grad": 1.0,
+    "batch": 32, "microbatch": 32, "accum": 1,
+    "scheduler": "none (fixed lr per candidate)",
+    "loss": "mean_batch(mean_12steps(((pred-target)/d_i)^2)); d_i from raw history, no gradient"
+  },
+
+  "divergence_protocol": {
+    "definition": "NaN/Inf in loss, gradients, parameters, or validation outputs. Large errors or temporary increases are NOT divergence.",
+    "candidate_handling": "mark DIVERGED with persisted evidence (epoch, update, reason, loss/grad trail), continue all other candidates; never re-run with a different seed",
+    "selection_rule": "any diverged seed makes the (domain, lr) selection score +inf; never average the remaining successful seeds; other domains may still use that lr",
+    "freeze_condition": "all 171 candidates hold a terminal state (success|diverged) AND every domain has >=1 lr whose 3 seeds all succeeded",
+    "must_stop_queue": "all lrs of a domain unavailable, OOM, data error, code error - never waived by dropping candidates or domains",
+    "disclosure": "final report lists every diverged (domain, lr, seed) with divergence location",
+    "exception_class": "DivergenceError (numerical divergence only; OOM/data/code errors are separate fatal classes)"
+  },
+
+  "budget": {
+    "epochs": 100, "patience": 15,
+    "epoch0_val": "diagnostic only; never used for selection or patience counting",
+    "seeds": [2021, 2022, 2023],
+    "U_d": "ceil(D_d / 32)", "S_d": "32 * U_d",
+    "expected_totals": {"native_train": 4041, "dense": 36763, "val": 895, "test": 2474, "excluded": 696, "n_vars": 190, "n_domains": 19},
+    "expected_domain_table": [
+      {"domain": "CropsAndStaples",                "n_vars": 11, "native_train": 428, "dense": 5069, "val": 88,  "test": 188},
+      {"domain": "EnergyAndFuels",                 "n_vars": 10, "native_train": 401, "dense": 4745, "val": 84,  "test": 171},
+      {"domain": "LivestockAndFoodProducts",       "n_vars": 10, "native_train": 283, "dense": 3343, "val": 46,  "test": 318},
+      {"domain": "RawMaterialsAndConstruction",    "n_vars": 10, "native_train": 369, "dense": 4386, "val": 82,  "test": 172},
+      {"domain": "SpecialtyAndAdvancedMaterials",  "n_vars": 8,  "native_train": 267, "dense": 3150, "val": 54,  "test": 117},
+      {"domain": "StrategicAndHighValueMaterials", "n_vars": 10, "native_train": 431, "dense": 5113, "val": 88,  "test": 178},
+      {"domain": "Currency",                       "n_vars": 10, "native_train": 470, "dense": 5530, "val": 90,  "test": 180},
+      {"domain": "arts",                           "n_vars": 10, "native_train": 60,  "dense": 210,  "val": 30,  "test": 151},
+      {"domain": "climate",                        "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "economy",                        "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "electronic_technology",          "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "finance",                        "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "pets",                           "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "public_health",                  "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "public_policy",                  "n_vars": 11, "native_train": 132, "dense": 517,  "val": 33,  "test": 99},
+      {"domain": "science",                        "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "shopping",                       "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "society",                        "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90},
+      {"domain": "traffic",                        "n_vars": 10, "native_train": 120, "dense": 470,  "val": 30,  "test": 90}
+    ],
+    "sum_U_d_expected": 1157
+  },
+
+  "sampling": {
+    "balance": "S_d slots split as equally as possible among the domain's vars; remainder slots by per-epoch fixed-seed rotation; within-var uniform WITH replacement from the dense pool; slot order shuffled",
+    "alignment": "same RNG families and formulas as the LN run's build_slots: epochs 1..10 reproduce LN F1 sampling for the same (domain, seed); later epochs continue the same rule",
+    "rng_families": {
+      "slot_remainder": "np.random.default_rng([seed, 3000+domain_idx, epoch]).permutation(n_vars)[:rem]",
+      "shuffle": "np.random.default_rng([seed, 7000+domain_idx, epoch]).permutation(len(slots))",
+      "base_indices": "np.random.default_rng([seed, 9000+domain_idx, epoch]).integers(0, dense_count, size=k)",
+      "torch_init": "int(np.random.default_rng([seed, 1100+domain_idx]).integers(0, 2**31-1)) -> torch.manual_seed; identical initial weights across lrs for the same (domain, seed)",
+      "py_np_seed": "int(np.random.default_rng([seed, 1200+domain_idx]).integers(0, 2**31-1)) -> random.seed / np.random.seed",
+      "note": "all generators re-derived from constant seeds at every epoch start; never resumed from pickled streams; sampling independent of lr and init"
+    },
+    "epoch_index_hash": "sha256 of the epoch's slot list recorded in the epoch_end jsonl row"
+  },
+
+  "selection": {
+    "metric": "val std-MSE: per-window d_i (fallback rule), mean over 12 steps; per-var mean then var-equal mean across the domain's native val windows",
+    "epoch_range": [1, 100],
+    "improve_rule": "v < best - 1e-8*max(1,best); near-ties keep the earlier epoch",
+    "tie_tol": 1e-8,
+    "patience": 15,
+    "lr_rule": "per domain per lr: arithmetic mean of the 3 seeds' best val std-MSE; any diverged seed -> +inf (never average remaining seeds); lowest mean wins; |a-b| <= 1e-8*max(1,min) tie -> smaller lr",
+    "keep": "all three seeds' best checkpoints of the selected lr; no best-seed picking, no ensembling, no retraining on val"
+  },
+
+  "test": {
+    "only_after_freeze": true,
+    "eval_batch": 64,
+    "eval_dtype": "float64",
+    "aggregation": "window mean -> var equal -> domain equal -> 19-domain overall; 3-seed mean+/-std(ddof=1)",
+    "per_seed_coverage": 2474,
+    "raw_scale": "raw-scale metrics reported only as per-variable supplements"
+  },
+
+  "resources": {
+    "gpu_uuid": "GPU-534dc363-5a70-bc9a-824a-309a9a2a3911",
+    "gpu_desc": "single L20 on eta (222.201.145.32), co-running with the LN queue and other tenants",
+    "gate": "before every candidate: free VRAM >= preflight peak + 3 GiB; PAUSE sentinel honored; never stop co-tenant processes; no CPU fallback; no per-candidate microbatch changes",
+    "vram_margin_mb": 3072,
+    "preflight_min_free_mb": 8192,
+    "min_disk_free_gb": 20
+  },
+
+  "comparison": {
+    "primary": "T1 vs F1 (VisionTS LN-dense), same scoring and stratified aggregation",
+    "side_by_side": ["Z0", "N0", "F0", "F1", "F2", "F3", "F4"],
+    "ln_results_dir": "read from the LN run's results/ (overall.csv, domain_summary.csv, test_variable_level.csv, aggregate_summary.json); LN metrics are parsed, never recomputed",
+    "degrade_rule": "if LN aggregate outputs are unavailable, emit T1-only tables with comparison_status=ln_results_unavailable; rerun aggregate after LN finishes to fill the comparison"
+  },
+
+  "slot_probe_hashes": {
+    "arts|2021|1": {
+      "S": 224, "U": 7, "n_slots": 224,
+      "slot_hash": "19e4d07629ee2dc1b0540b74530416a6381a66cfc05327b49f17ff577a0f97da"
+    },
+    "arts|2021|37": {
+      "S": 224, "U": 7, "n_slots": 224,
+      "slot_hash": "543dbb9d87c1369d031de0c8643ec7a1c0a9a0361d375013342227473f33a351"
+    },
+    "arts|2022|1": {
+      "S": 224, "U": 7, "n_slots": 224,
+      "slot_hash": "86a5964a9f3730c8765ef24dc096c8a87847a5dce9479bc6fd4f7f2956676e15"
+    },
+    "Currency|2021|1": {
+      "S": 5536, "U": 173, "n_slots": 5536,
+      "slot_hash": "621fde7740c5eb5724d9951e11e635362caa0ac3b59291c93aeabbb1264ea01d"
+    },
+    "Currency|2023|10": {
+      "S": 5536, "U": 173, "n_slots": 5536,
+      "slot_hash": "d5e35c77d2623d598eeb5e8a607c916ef437809a6035ed85b620c1e0b2a8877b"
+    },
+    "public_policy|2022|5": {
+      "S": 544, "U": 17, "n_slots": 544,
+      "slot_hash": "aa94f939cea6b7063442ad47b0092f663da394d13c72e515fc1c91a08f65aac1"
+    }
+  }
+}
