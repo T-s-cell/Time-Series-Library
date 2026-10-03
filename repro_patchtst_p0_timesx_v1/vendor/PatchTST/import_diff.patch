@@ -1,0 +1,26 @@
+--- upstream/models/PatchTST.py	2026-10-03 11:49:57.719457176 +0800
++++ adapted/ptst_models/PatchTST.py	2026-10-03 11:49:57.727457141 +0800
+@@ -8,8 +8,8 @@
+ import torch.nn.functional as F
+ import numpy as np
+ 
+-from layers.PatchTST_backbone import PatchTST_backbone
+-from layers.PatchTST_layers import series_decomp
++from ptst_layers.PatchTST_backbone import PatchTST_backbone
++from ptst_layers.PatchTST_layers import series_decomp
+ 
+ 
+ class Model(nn.Module):
+--- upstream/layers/PatchTST_backbone.py	2026-10-03 11:49:57.719457176 +0800
++++ adapted/ptst_layers/PatchTST_backbone.py	2026-10-03 11:49:57.727457141 +0800
+@@ -9,8 +9,8 @@
+ import numpy as np
+ 
+ #from collections import OrderedDict
+-from layers.PatchTST_layers import *
+-from layers.RevIN import RevIN
++from ptst_layers.PatchTST_layers import *
++from ptst_layers.RevIN import RevIN
+ 
+ # Cell
+ class PatchTST_backbone(nn.Module):
