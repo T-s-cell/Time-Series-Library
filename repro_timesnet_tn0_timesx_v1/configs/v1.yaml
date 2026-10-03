@@ -1,0 +1,455 @@
+{
+ "budget": {
+  "S_d": "32 * U_d",
+  "U_d": "ceil(D_d / 32)",
+  "epoch0_val": "diagnostic only; never used for selection or patience counting",
+  "epochs": 100,
+  "expected_domain_table": [
+   {
+    "dense": 5069,
+    "domain": "CropsAndStaples",
+    "n_vars": 11,
+    "native_train": 428,
+    "test": 188,
+    "val": 88
+   },
+   {
+    "dense": 4745,
+    "domain": "EnergyAndFuels",
+    "n_vars": 10,
+    "native_train": 401,
+    "test": 171,
+    "val": 84
+   },
+   {
+    "dense": 3343,
+    "domain": "LivestockAndFoodProducts",
+    "n_vars": 10,
+    "native_train": 283,
+    "test": 318,
+    "val": 46
+   },
+   {
+    "dense": 4386,
+    "domain": "RawMaterialsAndConstruction",
+    "n_vars": 10,
+    "native_train": 369,
+    "test": 172,
+    "val": 82
+   },
+   {
+    "dense": 3150,
+    "domain": "SpecialtyAndAdvancedMaterials",
+    "n_vars": 8,
+    "native_train": 267,
+    "test": 117,
+    "val": 54
+   },
+   {
+    "dense": 5113,
+    "domain": "StrategicAndHighValueMaterials",
+    "n_vars": 10,
+    "native_train": 431,
+    "test": 178,
+    "val": 88
+   },
+   {
+    "dense": 5530,
+    "domain": "Currency",
+    "n_vars": 10,
+    "native_train": 470,
+    "test": 180,
+    "val": 90
+   },
+   {
+    "dense": 210,
+    "domain": "arts",
+    "n_vars": 10,
+    "native_train": 60,
+    "test": 151,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "climate",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "economy",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "electronic_technology",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "finance",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "pets",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "public_health",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 517,
+    "domain": "public_policy",
+    "n_vars": 11,
+    "native_train": 132,
+    "test": 99,
+    "val": 33
+   },
+   {
+    "dense": 470,
+    "domain": "science",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "shopping",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "society",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   },
+   {
+    "dense": 470,
+    "domain": "traffic",
+    "n_vars": 10,
+    "native_train": 120,
+    "test": 90,
+    "val": 30
+   }
+  ],
+  "expected_totals": {
+   "dense": 36763,
+   "excluded": 696,
+   "n_domains": 19,
+   "n_vars": 190,
+   "native_train": 4041,
+   "test": 2474,
+   "val": 895
+  },
+  "patience": 15,
+  "seeds": [
+   2021,
+   2022,
+   2023
+  ],
+  "sum_U_d_expected": 1157
+ },
+ "comparison": {
+  "degrade_rule": "if LN aggregate outputs are unavailable, emit TN0-only tables with comparison_status=ln_results_unavailable; if the T0 results dir is missing, degrade the TN0-vs-T0 block with t0ref_comparison_status=t0_results_unavailable; if the P0 results dir is missing, degrade the TN0-vs-P0 block with p0ref_comparison_status=p0_results_unavailable; rerun aggregate idempotently once references finish",
+  "expected_overall_6dp": {
+   "F0": {
+    "mae": [
+     1.007067,
+     0.000412
+    ],
+    "mse": [
+     3.546316,
+     0.004496
+    ]
+   },
+   "P0": {
+    "mae": [
+     1.089484,
+     0.003738
+    ],
+    "mse": [
+     3.941538,
+     0.028879
+    ]
+   },
+   "T0": {
+    "mae": [
+     1.087468,
+     0.006414
+    ],
+    "mse": [
+     3.97338,
+     0.118713
+    ]
+   }
+  },
+  "import_check": "parsed F0/T0/P0 overall values must equal the pre-registered numbers below at 6-decimal precision or aggregate aborts",
+  "ln_results_dir_default": "/dev_data/wlt/VisionTS_Experiments/repro_ln_timesx_v1/results",
+  "p0_results_dir_default": "/dev_data/wlt/Time-Series-Library/repro_patchtst_p0_timesx_v1/results",
+  "primary": "TN0 (TimesNet-native) vs F0 (VisionTS LN-native), T0 (TimeMixer-native) and P0 (PatchTST-native); acceptance is protocol correctness, not TN0 winning",
+  "t0_results_dir_default": "/dev_data/wlt/Time-Series-Library/repro_timemixer_t0_timesx_v1/results"
+ },
+ "data": {
+  "ctx": 96,
+  "dense_rule": "dense_count = max(0, n_train_obs - 107); dense window start s in [0, dense_count); the full 108 steps (96 input + 12 target) lie inside the training observations",
+  "fallback_std_rule": "per-window d_i = pstdev(raw 96-step input, ddof=0); if < std_eps use the frozen manifest fallback_std (pstdev of the variable's first 96 training observations); invalid fallback aborts; no future targets are used; never replaced by the model's internal eps-std",
+  "no_external_scaler": true,
+  "pred": 12,
+  "std_ddof": 0,
+  "std_eps": 1e-08,
+  "window_arrays": "x = series[off+s : off+s+96], y = series[off+s+96 : off+s+108] from data_cache.npz"
+ },
+ "divergence_protocol": {
+  "candidate_handling": "mark DIVERGED with persisted evidence (epoch, update, reason, loss/grad trail), continue all other candidates; never re-run with a different seed",
+  "definition": "NaN/Inf in loss, gradients, parameters, or validation outputs. Large errors or temporary increases are NOT divergence.",
+  "disclosure": "final report lists every diverged (domain, lr, seed) with divergence location",
+  "exception_class": "DivergenceError (numerical divergence only; OOM/data/code errors are separate fatal classes)",
+  "freeze_condition": "all 171 candidates hold a terminal state (success|diverged) AND every domain has >=1 lr whose 3 seeds all succeeded",
+  "must_stop_queue": "all lrs of a domain unavailable, OOM, data error, code error - never waived by dropping candidates or domains",
+  "selection_rule": "any diverged seed makes the (domain, lr) selection score +inf; never average the remaining successful seeds; other domains may still use that lr"
+ },
+ "model": {
+  "amp": false,
+  "derived": {
+   "internal_norm_eps": 1e-05,
+   "n_timesblocks": 2,
+   "note": "official forecast path: instance normalization (means/std of the 96-step input, var unbiased=False, +1e-5 inside the sqrt, detached) then de-normalization of the 108-step output - non-adaptive, applied inside the model; the adapter adds NO external scaler and NO second normalization; predict_linear maps seq_len->pred_len+seq_len (96->108) so TimesBlocks operate at length 108 and forward returns the last 12 steps; a SINGLE shared LayerNorm(d_model) follows every TimesBlock",
+   "positional_buffer": [
+    1,
+    5000,
+    16
+   ],
+   "predict_linear_out": 108,
+   "timef_in": 4
+  },
+  "deterministic_algorithms": true,
+  "eval_batch_size_1": {
+   "fixed_before": "frozen in this protocol before any TN0 result was seen",
+   "reason": "FFT_for_Period selects top-k periods from the batch-mean amplitude spectrum (abs(xf).mean(0)); with B>1 the periods chosen for one window depend on the other windows in the batch; B=1 makes per-window prediction a function of that window alone. B identical copies of one window reproduce its own spectrum, so the proof of batch sensitivity uses distinct windows (diagnostic) - the HARD gates are the B==1 assertion at the eval entry point, order-independence of per-window results, and save/reload/re-inference bitwise equality",
+   "rule": "EVERY evaluation forward (epoch-0 diagnostic, per-epoch validation, final test, recheck replay) runs at batch size 1; training keeps batch 32"
+  },
+  "fp32": true,
+  "lineage": "TimesNet (thuml/Time-Series-Library forecasting path), vendored read-only at T-s-cell/Time-Series-Library commit 74e58ebff7826f43ae0c6b979970c95627456358; random init, ALL learnable parameters trained",
+  "pins": {
+   "grad_bearing_expected": 55,
+   "grad_none_names_expected": [
+    "enc_embedding.temporal_embedding.embed.weight"
+   ],
+   "measured_note": "Measured by vendor_probe.py on theta GPU0 GPU-eed27426-e2dc-589b-c763-81251e9563d8 (and CPU, consistent) on 2026-10-03, torch 2.12.0+cu126: 596,941 params in 56 tensors, 57 state_dict entries (56 params + the fixed positional buffer pe), 55 grad-bearing tensors after a real backward, non-trainable list EMPTY, grad-None set exactly the one unused timeF temporal Linear (enc_embedding.temporal_embedding.embed.weight, never in the forward because x_mark is None; Adam skips it - proven in preflight B)",
+   "nontrainable_expected": [],
+   "params_expected": 596941,
+   "state_dict_entries_expected": 57,
+   "tensors_expected": 56
+  },
+  "structure": {
+   "activation": "gelu",
+   "c_out": 1,
+   "d_ff": 32,
+   "d_model": 16,
+   "dec_in": 1,
+   "dropout": 0.1,
+   "e_layers": 2,
+   "embed": "timeF",
+   "enc_in": 1,
+   "freq": "h",
+   "label_len": 0,
+   "num_kernels": 6,
+   "pred_len": 12,
+   "seq_len": 96,
+   "task_name": "long_term_forecast",
+   "top_k": 5
+  },
+  "structure_from_signature_defaults": {
+   "disclosure": "activation=gelu is NOT read by TimesNet (GELU is hard-coded in TimesBlock's nn.Sequential) - kept as a harmless SimpleNamespace superset; label_len is assigned to self.label_len but never referenced by the forecast path; dec_in is not read at all; x_dec/x_mark_dec are never referenced by forecast. Time marks are None everywhere (no calendar features), so DataEmbedding reduces to value+position."
+  },
+  "tf32_cudnn": false,
+  "tf32_matmul": false,
+  "vendor": {
+   "adaptation_note": "import-line package isolation ONLY (layers. -> tn_layers., 2 changed lines in one file; directories renamed models/->tn_models/, layers/->tn_layers/); model_check.py proves upstream and adapted are bitwise-equal on identical weights+inputs; the vendor tree is TN0's model-core lineage, pinned independently of the TSLib commit",
+   "adapted_sha256": {
+    "LICENSE": "8a6caa178ea3f33ebff5d7bb5558628cf5b423305dc30d3630f86564c7db94a2",
+    "tn_layers/Conv_Blocks.py": "16d9f2d9e4fa094dc357901e32beecda9839709bcca02625e6447186933ce4e1",
+    "tn_layers/Embed.py": "17e7c3577324c41a0da427a199c955b782fde905aabb1f7cbc3c4e15ebd4ae35",
+    "tn_models/TimesNet.py": "b670bf680f7b8b2621581dc6563d5ab7f772f670e379c7f438b3e14a738a3e30"
+   },
+   "files_md5": {
+    "vendor/TimesNet/adapted/tn_layers/Conv_Blocks.py": "e06b0be6c16dfcfc4f2d4986209b3af2",
+    "vendor/TimesNet/adapted/tn_layers/Embed.py": "81485d05598d7b677b01f5154bf2595c",
+    "vendor/TimesNet/adapted/tn_models/TimesNet.py": "7c1bc86da4ace95fe18c4b9238cf3424"
+   },
+   "import_diff_sha256": "75549585018be3dd72ee23139a429dba2c59c7d88604b8286eafd6ce18d01217",
+   "upstream_commit": "74e58ebff7826f43ae0c6b979970c95627456358",
+   "upstream_commit_note": "T-s-cell/Time-Series-Library main; the 3 model source files (+LICENSE) at this commit are byte-identical to theta's pinned working-tree commit 1d086314ccfa921ffb2388e5448851f635f09d52 (verified 2026-10-03 by independent export of both revisions, sha256 equal)",
+   "upstream_sha256": {
+    "LICENSE": "8a6caa178ea3f33ebff5d7bb5558628cf5b423305dc30d3630f86564c7db94a2",
+    "layers/Conv_Blocks.py": "16d9f2d9e4fa094dc357901e32beecda9839709bcca02625e6447186933ce4e1",
+    "layers/Embed.py": "17e7c3577324c41a0da427a199c955b782fde905aabb1f7cbc3c4e15ebd4ae35",
+    "layers/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "models/TimesNet.py": "f64c4bed1fd7347090044a0163bd4209c9f9ec1c1b19ceff47842df36b64bba7",
+    "models/__init__.py": "d97d758fc2ef4da5eb24a20e940538bb5b8f6ed81d9b2e6ecaf20a2b178daee2"
+   },
+   "upstream_url": "https://github.com/thuml/Time-Series-Library"
+  }
+ },
+ "optim": {
+  "accum": 1,
+  "batch": 32,
+  "betas": [
+   0.9,
+   0.999
+  ],
+  "clip_grad": 1.0,
+  "eps": 1e-08,
+  "loss": "mean_batch(mean_12steps(((pred-target)/d_i)^2)); d_i from raw history, no gradient",
+  "lrs": [
+   0.0001,
+   0.001,
+   0.01
+  ],
+  "microbatch": 32,
+  "scheduler": "none (fixed lr per candidate)",
+  "weight_decay": 0.0
+ },
+ "protocol_version": "timesx_timesnet_tn0_v1",
+ "recheck_tolerances": {
+  "inference_replay": {
+   "grace_rtol": 1e-06,
+   "primary": "bitwise",
+   "rule": "reloaded checkpoints re-predict their domain's test windows (batch size 1, same as the saved run); primary assertion is bitwise equality with the saved predictions. A mismatch first triggers diagnostics (max abs/rel, first mismatch); only if max rel <= 1e-6 may the run be downgraded to PASS_WITH_DISCLOSURE, fully disclosed in the report. Tolerances are never loosened after seeing a failure - investigate the cause instead."
+  },
+  "metric_recompute": {
+   "abs_tol": 1e-12,
+   "rule": "stored metrics came from identical float64 op chains on identical inputs, so the independent recompute must match bitwise; 1e-12 is a frozen sanity bound only - never a live-relaxation knob"
+  }
+ },
+ "resources": {
+  "gate": "before every candidate: free VRAM >= preflight peak + 3 GiB; PAUSE sentinel honored; never stop co-tenant processes; no CPU fallback; no per-candidate microbatch changes",
+  "gpu_desc": "single RTX 3090 (GPU0) on theta (222.201.145.184), pinned via CUDA_VISIBLE_DEVICES+TN0_GPU_UUID",
+  "gpu_uuid": "GPU-eed27426-e2dc-589b-c763-81251e9563d8",
+  "min_disk_free_gb": 20,
+  "preflight_min_free_mb": 8192,
+  "vram_margin_mb": 3072
+ },
+ "sampling": {
+  "alignment": "same RNG families and formulas as the LN run's build_slots F0 native branch: epochs 1..10 reproduce LN F0 sampling for the same (domain, seed); later epochs continue the same rule; budget stays dense-derived: U_d = ceil(D_dense_d/32), never shrunk to native pool size",
+  "balance": "S_d slots split as equally as possible among the domain's vars; remainder slots by per-epoch fixed-seed rotation; within-var uniform WITH replacement from the variable's native train pool of sample_ids; slot order shuffled",
+  "epoch_index_hash": "sha256 of the epoch's slot list recorded in the epoch_end jsonl row",
+  "pool": "native",
+  "rng_families": {
+   "base_indices": "np.random.default_rng([seed, 9000+domain_idx, epoch]).integers(0, pool_n, size=k) where pool_n = len(native train sample_ids); slots hold sample_id strings resolved via sample_start_idx",
+   "note": "all generators re-derived from constant seeds at every epoch start; never resumed from pickled streams; sampling independent of lr and init",
+   "py_np_seed": "int(np.random.default_rng([seed, 1200+domain_idx]).integers(0, 2**31-1)) -> random.seed / np.random.seed",
+   "shuffle": "np.random.default_rng([seed, 7000+domain_idx, epoch]).permutation(len(slots))",
+   "slot_remainder": "np.random.default_rng([seed, 3000+domain_idx, epoch]).permutation(n_vars)[:rem]",
+   "torch_init": "int(np.random.default_rng([seed, 1100+domain_idx]).integers(0, 2**31-1)) -> torch.manual_seed; identical initial weights across lrs for the same (domain, seed)"
+  }
+ },
+ "selection": {
+  "epoch_range": [
+   1,
+   100
+  ],
+  "improve_rule": "v < best - 1e-8*max(1,best); near-ties keep the earlier epoch",
+  "keep": "all three seeds' best checkpoints of the selected lr; no best-seed picking, no ensembling, no retraining on val",
+  "lr_rule": "per domain per lr: arithmetic mean of the 3 seeds' best val std-MSE; any diverged seed -> +inf (never average remaining seeds); lowest mean wins; |a-b| <= 1e-8*max(1,min) tie -> smaller lr",
+  "metric": "val std-MSE: per-window d_i (fallback rule), mean over 12 steps; per-var mean then var-equal mean across the domain's native val windows",
+  "patience": 15,
+  "tie_tol": 1e-08
+ },
+ "slot_probe_hashes": {
+  "Currency|2021|1": {
+   "S": 5536,
+   "U": 173,
+   "n_slots": 5536,
+   "slot_hash": "757b4b3b0cfa0fafc4c63e3cf8968df0eb1f112238f1038a546be5550c28420a"
+  },
+  "Currency|2023|10": {
+   "S": 5536,
+   "U": 173,
+   "n_slots": 5536,
+   "slot_hash": "830aa7c1d16237676be4a961220edb1fabb4d96f3ce054ef4e933dccbf8ecc0a"
+  },
+  "arts|2021|1": {
+   "S": 224,
+   "U": 7,
+   "n_slots": 224,
+   "slot_hash": "154c3344963a2926d35aca1e2abf21ff259af2653e4fd17cddba3f8ae01cf5b5"
+  },
+  "arts|2021|37": {
+   "S": 224,
+   "U": 7,
+   "n_slots": 224,
+   "slot_hash": "f4fd6ef326be9720828f88d34016c65efde7f6344ad27eed613bdd87aeb57932"
+  },
+  "arts|2022|1": {
+   "S": 224,
+   "U": 7,
+   "n_slots": 224,
+   "slot_hash": "4501065d8116bf6d405cdc05162d17a86df4d8794324a45c55306db28384af50"
+  },
+  "public_policy|2022|5": {
+   "S": 544,
+   "U": 17,
+   "n_slots": 544,
+   "slot_hash": "c14dece23c3bc48522513c9a6f358016e962f9051c33726aa4e2664c445c0d6d"
+  }
+ },
+ "source_snapshot": {
+  "ln_data_cache_array_sha256": {
+   "series": "948d78a48b0cbb03b5cd24b004259291ccb6ffe3cba2f2597ea71cfa9177b155",
+   "series_len": "0f0d9cc49f4b9c3c0f30ff65e402133b9545bb4cee959c2311955c44108262cb",
+   "series_off": "9aff39665e203657459da3c248046698fd7ccf86b2c23f47b2322f2b253c254c",
+   "var_keys": "c20d71401295a40c23316d40859115edfec608d3d8d4e4a51baf7292765d36e0"
+  },
+  "ln_data_cache_sha256": "f83924d9f459da096c45ccd880f204efc095fbed5513794a5d706d71371881aa",
+  "ln_dir_default": "/dev_data/wlt/VisionTS_Experiments/repro_ln_timesx_v1",
+  "ln_dir_local_fallback": "/home/wlt/MMTS/VisionTS_Experiments/repro_ln_timesx_v1",
+  "ln_protocol_sha256": "92c386790a1e14d88092e31b6abae183eb546038d445cd049d6bc43805afd879",
+  "ln_split_counts_sha256": "a24b8757d70217864806deb79e386ea5bb41d6a7830e3a8d7190ccd0a0076f11",
+  "ln_split_manifest_content_sha256_excl_zip_path": "1b0c2db9ceba21ec3c52f3586ba3a60cd95e7fd9f037ae431ed6bfdf6f9b9cd9",
+  "ln_split_manifest_sha256": "b47feebfe5e7fbf6c650ce2d23735794d853b515774c43c658724cf8328363a9",
+  "ln_static_code_note": "LN code-fingerprint recheck covers ONLY the static .py/.sh/.yaml files listed in the LN protocol; running LN logs/checkpoints/results are explicitly excluded.",
+  "protocol_pin_note": "Same 4-file pins as the accepted T0/P0 campaigns (identical frozen materials; T0's protocol_pin_note applies verbatim)."
+ },
+ "spec_doc": "TN0 (TimesNet-native/TimesX, EXP-008) implementation plan, 2026-10-03; data/sampling/optim/budget/selection/test inherited verbatim from the accepted T0/P0 campaigns",
+ "test": {
+  "aggregation": "window mean -> var equal -> domain equal -> 19-domain overall; 3-seed mean+/-std(ddof=1)",
+  "counting_note": "each of the 57 selected models predicts ONLY its own domain's native test windows; per seed the union over the 19 domain models is exactly the 2,474 unique native test windows (3 x 2,474 = 7,422 window predictions total). eval_batch=1 (frozen): TimesNet's FFT period selection is batch-dependent, so every evaluation forward is one window at a time - disclosed and enforced by the forward_pred B==1 assertion",
+  "eval_batch": 1,
+  "eval_dtype": "float64",
+  "only_after_freeze": true,
+  "per_seed_coverage": 2474,
+  "raw_scale": "raw-scale metrics reported only as per-variable supplements"
+ },
+ "tslib": {
+  "commit_at_start": "1d086314ccfa921ffb2388e5448851f635f09d52",
+  "isolation_rule": "tracked files must be unchanged; untracked content allowed only under repro_timesnet_tn0_timesx_v1/, the tracked-at-origin repro_patchtst_p0_timesx_v1/ runtime dirs, and the pre-existing repro_timemixer_t0_timesx_v1/; enforced by prepare/preflight/audit",
+  "whitelist_note": "theta stays at its own HEAD 1d086314 (no working-tree mutation for TN0); the accepted P0 campaign dirs keep untracked runtime subdirs (audit/logs/predictions/snapshot) and T0's dir is fully untracked as delivered. Disclosed side effect: T0/P0's own frozen protocols pin older commits, so they are not re-runnable on this machine while TN0 exists; the TN0 model core comes from the vendored tree (pinned by sha256/md5 independently of this commit), and its 3 source files are byte-identical to baseline commit 74e58eb"
+ }
+}

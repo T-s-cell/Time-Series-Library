@@ -1,0 +1,13 @@
+--- upstream/models/TimesNet.py
++++ adapted/tn_models/TimesNet.py
+@@ -2,8 +2,8 @@
+ import torch.nn as nn
+ import torch.nn.functional as F
+ import torch.fft
+-from layers.Embed import DataEmbedding
+-from layers.Conv_Blocks import Inception_Block_V1
++from tn_layers.Embed import DataEmbedding
++from tn_layers.Conv_Blocks import Inception_Block_V1
+ 
+ 
+ def FFT_for_Period(x, k=2):
